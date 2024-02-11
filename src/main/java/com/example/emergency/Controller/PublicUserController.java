@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/user")
 public class PublicUserController {
 
@@ -29,6 +30,4 @@ public class PublicUserController {
     public boolean login(@RequestBody LoginDTO loginDTO){
         return publicUserService.login(loginDTO);
     }
-
-
 }

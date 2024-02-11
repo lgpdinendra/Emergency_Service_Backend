@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class IncidentUpdateService {
@@ -19,6 +20,18 @@ public class IncidentUpdateService {
 
     public List<IncidentUpdate> getAllIncident() {
         return incidentUpdateRepository.findAll();
+    }
+
+    public IncidentUpdate getIncidentById(String id) {
+        Optional<IncidentUpdate> optionalIncident = incidentUpdateRepository.findById(id);
+        return optionalIncident.orElse(null);
+    }
+    public boolean deleteIncident(String id) {
+        if (incidentUpdateRepository.existsById(id)) {
+            incidentUpdateRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }
 

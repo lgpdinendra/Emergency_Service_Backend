@@ -10,22 +10,56 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/report_incident")
+@CrossOrigin(origins = "http://localhost:5173")
+@RequestMapping("/incidents")
 public class IncidentUpdateController {
 
     @Autowired
     private IncidentUpdateService incidentUpdateService;
 
-    @PostMapping
+    @GetMapping
+    public ResponseEntity<List<IncidentUpdate>> getAllIncident() {
+        List<IncidentUpdate> incident = incidentUpdateService.getAllIncident();
+        return new ResponseEntity<>(incident, HttpStatus.OK);
+    }
+
+    @PostMapping("/new")
     public ResponseEntity<IncidentUpdate> saveIncident(@RequestBody IncidentUpdate incident) {
         IncidentUpdate savedIncident = incidentUpdateService.saveIncident(incident);
         return new ResponseEntity<>(savedIncident, HttpStatus.CREATED);
     }
 
-    @GetMapping
-    public ResponseEntity<List<IncidentUpdate>> getAllIncident() {
-        List<IncidentUpdate> iincident = incidentUpdateService.getAllIncident();
-        return new ResponseEntity<>(iincident, HttpStatus.OK);
+    @PutMapping("/update/{id}")
+    public ResponseEntity<IncidentUpdate> updateIncident(@PathVariable String id, @RequestBody IncidentUpdate updatedIncident) {
+        IncidentUpdate incident = incidentUpdateService.getIncidentById(id);
+
+
+        if (incident == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        incident.setLocationName(updatedIncident.getLocationName());
+        incident.setStatus(updatedIncident.getStatus());
+        incident.setType(updatedIncident.getType());
+        incident.setDepartment(updatedIncident.getDepartment());
+        incident.setLatitude(updatedIncident.getLatitude());
+        incident.setLongitude(updatedIncident.getLongitude());
+        incident.setCurrentTime(updatedIncident.getCurrentTime());
+
+        IncidentUpdate updatedIncidentData = incidentUpdateService.saveIncident(incident);
+
+        return new ResponseEntity<>(updatedIncidentData, HttpStatus.OK);
     }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteIncident(@PathVariable String id) {
+        boolean isDeleted = incidentUpdateService.deleteIncident(id);
+
+        if (isDeleted) {
+            return ResponseEntity.ok("Incident with ID " + id + " has been deleted successfully.");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }
 

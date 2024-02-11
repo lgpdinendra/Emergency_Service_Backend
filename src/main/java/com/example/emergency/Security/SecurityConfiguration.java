@@ -22,7 +22,8 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 // .csrf().disable()
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(new AntPathRequestMatcher("/user/register")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/incidents/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/user/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/user/login")).permitAll()
                         .anyRequest().authenticated())
                 .httpBasic();
