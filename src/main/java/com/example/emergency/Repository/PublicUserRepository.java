@@ -10,4 +10,6 @@ public interface PublicUserRepository extends MongoRepository<PublicUser,String>
     PublicUser getPublicUserByEmail(String email);
 
     PublicUser findPublicUserByEmail(String email);
+
+    void deleteByEmail(String email);
 }

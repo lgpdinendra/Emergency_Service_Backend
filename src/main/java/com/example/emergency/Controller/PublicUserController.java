@@ -21,6 +21,12 @@ public class PublicUserController {
         return publicUserService.getAllPublicUsers();
     }
 
+    @GetMapping("/{email}")
+    public PublicUser getUserEmail(@PathVariable String email){
+        return publicUserService.getUserByEmail(email);
+    }
+
+
     @PostMapping("/register")
     public PublicUser addUser(@RequestBody PublicUser user){
         return publicUserService.addUser(user);

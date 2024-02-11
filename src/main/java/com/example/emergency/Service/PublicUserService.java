@@ -27,6 +27,10 @@ public class PublicUserService {
         return publicUserRepository.getPublicUserByEmail(email);
     }
 
+    public PublicUser getUserByEmail(String email){
+        return publicUserRepository.findPublicUserByEmail(email);
+    }
+
     public  PublicUser addUser(PublicUser user){
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return publicUserRepository.save(user);
