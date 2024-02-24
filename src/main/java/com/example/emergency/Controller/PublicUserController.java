@@ -43,7 +43,7 @@ public class PublicUserController {
         boolean isDeleted = publicUserService.deleteTask(email);
 
         if (isDeleted) {
-            return ResponseEntity.ok("Incident with ID " + email + " has been deleted successfully.");
+            return ResponseEntity.ok( email + " has been deleted successfully.");
         } else {
             return ResponseEntity.notFound().build();
         }

@@ -53,7 +53,7 @@ public class PublicUserService {
     public PublicUser updateUser(PublicUser userRequest){
         PublicUser existingUser = publicUserRepository.findPublicUserByEmail(userRequest.getEmail());
         existingUser.setPublic_firstname(userRequest.getPublic_firstname());
-        //existingUser.setEmail(userRequest.getEmail());
+        existingUser.setEmail(userRequest.getEmail());
         existingUser.setPublic_lastname(userRequest.getPublic_lastname());
 
         return publicUserRepository.save(existingUser);
