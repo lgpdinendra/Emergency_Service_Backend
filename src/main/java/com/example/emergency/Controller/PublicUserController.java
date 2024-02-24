@@ -49,4 +49,9 @@ public class PublicUserController {
         }
     }
 
+    @PutMapping("{email}")
+    public PublicUser updateUser(@RequestBody PublicUser user){
+        return publicUserService.updateUser(user);
+    }
+
 }
