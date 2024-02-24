@@ -12,4 +12,6 @@ public interface PublicUserRepository extends MongoRepository<PublicUser,String>
     PublicUser findPublicUserByEmail(String email);
 
     void deleteByEmail(String email);
+
+    boolean existsByEmail(String email);
 }

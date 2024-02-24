@@ -41,4 +41,12 @@ public class PublicUserService {
         boolean a = passwordEncoder.matches(loginDTO.getPassword(), user.getPassword());
         return user != null && a;
     }
+
+    public boolean deleteTask(String email){
+        if (publicUserRepository.existsByEmail(email)) {
+            publicUserRepository.deleteByEmail(email);
+            return true;
+        }
+        return false;
+    }
 }

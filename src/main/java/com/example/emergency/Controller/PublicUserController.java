@@ -4,6 +4,7 @@ import com.example.emergency.Model.LoginDTO;
 import com.example.emergency.Model.PublicUser;
 import com.example.emergency.Service.PublicUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,4 +37,16 @@ public class PublicUserController {
     public boolean login(@RequestBody LoginDTO loginDTO){
         return publicUserService.login(loginDTO);
     }
+
+    @DeleteMapping("/{email}")
+    public ResponseEntity<String> deleteTask(@PathVariable String email) {
+        boolean isDeleted = publicUserService.deleteTask(email);
+
+        if (isDeleted) {
+            return ResponseEntity.ok("Incident with ID " + email + " has been deleted successfully.");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }
