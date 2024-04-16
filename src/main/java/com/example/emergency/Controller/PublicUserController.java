@@ -4,10 +4,12 @@ import com.example.emergency.Model.LoginDTO;
 import com.example.emergency.Model.PublicUser;
 import com.example.emergency.Service.PublicUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
@@ -47,6 +49,11 @@ public class PublicUserController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/Usercount")
+    public long getUserCount(){
+        return publicUserService.getUserCount();
     }
 
     @PutMapping("{email}")

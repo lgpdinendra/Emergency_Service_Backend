@@ -61,5 +61,10 @@ public class IncidentUpdateController {
         }
     }
 
+    @GetMapping("/incidentCount")
+    public long getIncidentCount(){
+        return incidentUpdateService.getIncidentCount();
+    }
+
 }
 

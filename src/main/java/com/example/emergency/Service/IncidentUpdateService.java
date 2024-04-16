@@ -33,5 +33,9 @@ public class IncidentUpdateService {
         }
         return false;
     }
+
+    public long getIncidentCount() {
+        return incidentUpdateRepository.count();
+    }
 }
 

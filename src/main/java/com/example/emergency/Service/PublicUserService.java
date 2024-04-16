@@ -4,16 +4,22 @@ import com.example.emergency.Model.LoginDTO;
 import com.example.emergency.Model.PublicUser;
 import com.example.emergency.Repository.PublicUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class PublicUserService {
 
     @Autowired
     private PublicUserRepository publicUserRepository;
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -41,7 +47,6 @@ public class PublicUserService {
         boolean a = passwordEncoder.matches(loginDTO.getPassword(), user.getPassword());
         return user != null && a;
     }
-
     public boolean deleteTask(String email){
         if (publicUserRepository.existsByEmail(email)) {
             publicUserRepository.deleteByEmail(email);
@@ -57,5 +62,10 @@ public class PublicUserService {
         existingUser.setPublic_lastname(userRequest.getPublic_lastname());
 
         return publicUserRepository.save(existingUser);
+    }
+
+
+    public long getUserCount() {
+        return publicUserRepository.count();
     }
 }
