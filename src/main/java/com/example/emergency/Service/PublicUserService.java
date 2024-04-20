@@ -19,9 +19,6 @@ public class PublicUserService {
     private PublicUserRepository publicUserRepository;
 
     @Autowired
-    private MongoTemplate mongoTemplate;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
     public List<PublicUser> getAllPublicUsers(){
@@ -44,8 +41,23 @@ public class PublicUserService {
 
     public boolean login(LoginDTO loginDTO){
         PublicUser user = publicUserRepository.findPublicUserByEmail(loginDTO.getEmail());
-        boolean a = passwordEncoder.matches(loginDTO.getPassword(), user.getPassword());
-        return user != null && a;
+        if (user != null) {
+            if (passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
+                if (user.isApproved()) {
+                    // User is approved and password matches, return true
+                    return true;
+                } else {
+                    // User is not approved, return false
+                    return false;
+                }
+            } else {
+                // Password does not match, return false
+                return false;
+            }
+        }
+
+        // User does not exist, return false
+        return false;
     }
     public boolean deleteTask(String email){
         if (publicUserRepository.existsByEmail(email)) {
@@ -57,11 +69,19 @@ public class PublicUserService {
 
     public PublicUser updateUser(PublicUser userRequest){
         PublicUser existingUser = publicUserRepository.findPublicUserByEmail(userRequest.getEmail());
-        existingUser.setPublic_firstname(userRequest.getPublic_firstname());
+        existingUser.setPublic_name(userRequest.getPublic_name());
         existingUser.setEmail(userRequest.getEmail());
-        existingUser.setPublic_lastname(userRequest.getPublic_lastname());
-
         return publicUserRepository.save(existingUser);
+    }
+
+    public PublicUser approveUserByEmail(PublicUser userRequest) {
+        PublicUser user = publicUserRepository.findPublicUserByEmail(userRequest.getEmail());
+        if (user != null) {
+            user.setApproved(true);
+            return publicUserRepository.save(user);
+        } else {
+            return null;
+        }
     }
 
 

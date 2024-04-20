@@ -2,6 +2,7 @@ package com.example.emergency.Controller;
 
 import com.example.emergency.Model.LoginDTO;
 import com.example.emergency.Model.PublicUser;
+import com.example.emergency.Repository.PublicUserRepository;
 import com.example.emergency.Service.PublicUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -49,6 +50,11 @@ public class PublicUserController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @PutMapping("/approve/{email}")
+    public PublicUser approveUser(@RequestBody PublicUser user) {
+        return publicUserService.approveUserByEmail(user);
     }
 
     @GetMapping("/Usercount")

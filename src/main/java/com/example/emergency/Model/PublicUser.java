@@ -11,14 +11,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PublicUser {
-
     @Id
     private String id;
-    private String public_firstname;
-    private String public_lastname;
+    private String public_name;
     private String email;
     private String public_nic;
     private String public_pnumber;
     private String public_address;
     private String password;
+    private String Role = "PublicUsers";
+    private boolean approved = false;
 }

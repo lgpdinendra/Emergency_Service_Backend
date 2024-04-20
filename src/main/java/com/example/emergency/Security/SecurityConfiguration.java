@@ -23,8 +23,15 @@ public class SecurityConfiguration {
                 // .csrf().disable()
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(new AntPathRequestMatcher("/incidents/**")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/user/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/user/login")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/user/register")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/user/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/service/login")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/service/register")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/service/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/admin/login")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/admin/register")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/admin/**")).permitAll()
                         .anyRequest().authenticated())
                 .httpBasic();
         return http.build();
