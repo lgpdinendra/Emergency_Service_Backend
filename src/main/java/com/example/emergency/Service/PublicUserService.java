@@ -4,13 +4,12 @@ import com.example.emergency.Model.LoginDTO;
 import com.example.emergency.Model.PublicUser;
 import com.example.emergency.Repository.PublicUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class PublicUserService {
@@ -34,31 +33,31 @@ public class PublicUserService {
         return publicUserRepository.findPublicUserByEmail(email);
     }
 
-    public  PublicUser addUser(PublicUser user){
+    public ResponseEntity<?> addUser(PublicUser user){
+        if (publicUserRepository.findPublicUserByEmail(user.getEmail()) != null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email already exists");
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return publicUserRepository.save(user);
+        PublicUser savedUser = publicUserRepository.save(user);
+        return ResponseEntity.ok(savedUser);
     }
 
-    public boolean login(LoginDTO loginDTO){
+    public ResponseEntity<?> login(LoginDTO loginDTO){
         PublicUser user = publicUserRepository.findPublicUserByEmail(loginDTO.getEmail());
         if (user != null) {
             if (passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
                 if (user.isApproved()) {
-                    // User is approved and password matches, return true
-                    return true;
+                    return ResponseEntity.ok(user);
                 } else {
-                    // User is not approved, return false
-                    return false;
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User Registration is not approved");
                 }
             } else {
-                // Password does not match, return false
-                return false;
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalid Password");
             }
         }
-
-        // User does not exist, return false
-        return false;
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User does not exist");
     }
+
     public boolean deleteTask(String email){
         if (publicUserRepository.existsByEmail(email)) {
             publicUserRepository.deleteByEmail(email);
@@ -69,7 +68,7 @@ public class PublicUserService {
 
     public PublicUser updateUser(PublicUser userRequest){
         PublicUser existingUser = publicUserRepository.findPublicUserByEmail(userRequest.getEmail());
-        existingUser.setPublic_name(userRequest.getPublic_name());
+        existingUser.setPublicName(userRequest.getPublicName());
         existingUser.setEmail(userRequest.getEmail());
         return publicUserRepository.save(existingUser);
     }

@@ -8,7 +8,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 @Document(collection = "ReportIncident")
 public class IncidentUpdate {
@@ -22,6 +21,5 @@ public class IncidentUpdate {
 
     private double latitude;
     private double longitude;
-    private LocalDateTime currentTime;
-
+    private LocalDateTime currentTime = LocalDateTime.now();
 }

@@ -13,11 +13,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class PublicUser {
     @Id
     private String id;
-    private String public_name;
+    private String publicName;
     private String email;
-    private String public_nic;
-    private String public_pnumber;
-    private String public_address;
+    private String publicNic;
+    private String publicPnumber;
+    private String publicAddress;
     private String password;
     private String Role = "PublicUsers";
     private boolean approved = false;

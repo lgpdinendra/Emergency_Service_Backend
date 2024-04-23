@@ -1,13 +1,21 @@
 package com.example.emergency.Controller;
 
 import com.example.emergency.Model.IncidentUpdate;
+import com.example.emergency.Repository.IncidentUpdateRepository;
+import com.example.emergency.Service.IncidentCountByMonth;
 import com.example.emergency.Service.IncidentUpdateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
@@ -64,6 +72,11 @@ public class IncidentUpdateController {
     @GetMapping("/incidentCount")
     public long getIncidentCount(){
         return incidentUpdateService.getIncidentCount();
+    }
+
+    @GetMapping("/count-by-month")
+    public List<IncidentCountByMonth> getIncidentCountByMonth() {
+        return incidentUpdateService.getIncidentCountByMonth();
     }
 
 }

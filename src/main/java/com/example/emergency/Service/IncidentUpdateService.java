@@ -2,11 +2,14 @@ package com.example.emergency.Service;
 
 import com.example.emergency.Model.IncidentUpdate;
 import com.example.emergency.Repository.IncidentUpdateRepository;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Month;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class IncidentUpdateService {
@@ -36,6 +39,15 @@ public class IncidentUpdateService {
 
     public long getIncidentCount() {
         return incidentUpdateRepository.count();
+    }
+
+    public List<IncidentCountByMonth> getIncidentCountByMonth() {
+        List<IncidentUpdate> allIncidents = incidentUpdateRepository.findAll();
+        return allIncidents.stream()
+                .collect(Collectors.groupingBy(incident -> incident.getCurrentTime().getMonth()))
+                .entrySet().stream()
+                .map(entry -> new IncidentCountByMonth(entry.getKey(), entry.getValue().size()))
+                .collect(Collectors.toList());
     }
 }
 

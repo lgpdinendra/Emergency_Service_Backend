@@ -2,7 +2,6 @@ package com.example.emergency.Controller;
 
 import com.example.emergency.Model.LoginDTO;
 import com.example.emergency.Model.PublicUser;
-import com.example.emergency.Repository.PublicUserRepository;
 import com.example.emergency.Service.PublicUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
@@ -32,16 +30,16 @@ public class PublicUserController {
 
 
     @PostMapping("/register")
-    public PublicUser addUser(@RequestBody PublicUser user){
+    public ResponseEntity<?> addUser(@RequestBody PublicUser user) {
         return publicUserService.addUser(user);
     }
 
     @PostMapping("/login")
-    public boolean login(@RequestBody LoginDTO loginDTO){
+    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO){
         return publicUserService.login(loginDTO);
     }
 
-    @DeleteMapping("/{email}")
+    @DeleteMapping("/delete/{email}")
     public ResponseEntity<String> deleteTask(@PathVariable String email) {
         boolean isDeleted = publicUserService.deleteTask(email);
 
