@@ -2,9 +2,12 @@ package com.example.emergency.Service;
 
 import com.example.emergency.Model.Admin;
 import com.example.emergency.Model.LoginDTO;
+import com.example.emergency.Model.PublicUser;
 import com.example.emergency.Model.ServiceUser;
 import com.example.emergency.Repository.AdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -26,12 +29,16 @@ public class AdminService {
         return adminRepository.findAdminByEmail(email);
     }
 
-    public String login(LoginDTO loginDTO) {
+    public ResponseEntity<?> login(LoginDTO loginDTO){
         Admin user = adminRepository.findAdminByEmail(loginDTO.getEmail());
-        if (user != null && passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
-            return user.getEmail();
+        if (user != null) {
+            if (passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
+                return ResponseEntity.ok(user);
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalid Password");
+            }
         }
-        return null;
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User does not exist");
     }
 
     public Admin updateUser(Admin userRequest){

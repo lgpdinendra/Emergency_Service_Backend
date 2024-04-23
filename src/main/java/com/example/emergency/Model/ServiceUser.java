@@ -15,7 +15,9 @@ public class ServiceUser {
     private String id;
     private String serviceName;
     private String serviceType;
+    private String serviceDescription = "";
     private String email;
+    private String serviceImg = "";
     private String serviceRegnumber;
     private String servicePnumber;
     private String serviceAddress;

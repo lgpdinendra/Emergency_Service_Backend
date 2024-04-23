@@ -4,14 +4,13 @@ import com.example.emergency.Model.Admin;
 import com.example.emergency.Model.LoginDTO;
 import com.example.emergency.Service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5174")
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/admin")
 public class AdminController {
     @Autowired
@@ -34,13 +33,8 @@ public class AdminController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
-        String email = adminService.login(loginDTO);
-        if (email != null) {
-            return ResponseEntity.ok(email);
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed");
-        }
+    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO){
+        return adminService.login(loginDTO);
     }
 
     @PutMapping("{email}")
